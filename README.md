@@ -1,58 +1,110 @@
+# AWS Serverless Assignment - 2024
 
-# Welcome to your CDK Python project!
+## Overview
 
-This is a blank project for CDK development with Python.
+This document outlines the setup and implementation details for an AWS Serverless project using the AWS Cloud Development Kit (CDK) with Python. The project utilizes various AWS Serverless services, including API Gateway, Lambda, DynamoDB, S3, SQS, CloudFormation, and CloudWatch.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Prerequisites
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+Ensure that you have the necessary prerequisites for AWS CDK. Refer to [AWS CDK Prerequisites](https://docs.aws.amazon.com/cdk/v2/guide/work-with.html#work-with-prerequisites) for detailed instructions.
 
-To manually create a virtualenv on MacOS and Linux:
+## References
 
+- [AWS CDK Serverless Example](https://docs.aws.amazon.com/cdk/v2/guide/serverless_example.html)
+- [AWS CDK Python API Reference](https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.html)
+- [Working with AWS CDK in Python](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-python.html)
+
+## Initial Project Setup
+
+1. Initialize the project with the following commands:
+
+   ```bash
+   cdk init app --language python
+   python -m venv .venv
+   ```
+
+2. Install the required dependencies:
+
+   ```bash
+   python -m pip install -r requirements.txt
+   ```
+
+3. Fix AWS CDK import issues (Windows Only):
+
+   Use the following commands:
+   ```bash
+   Ctrl+Shift+p  > search > python: selectinterpreter > select global version
+   ```
+
+4. Bootstrap the AWS environment (run only for the first project in the selected AWS account):
+
+   ```bash
+   cdk bootstrap
+   ```
+
+5. Generate the CloudFormation template:
+
+   ```bash
+   cdk synth
+   ```
+
+6. View differences between the current and previous code:
+
+   ```bash
+   cdk diff
+   ```
+
+7. Deploy the project:
+
+   ```bash
+   cdk deploy
+   ```
+
+8. Destroy the stack (delete everything):
+
+   ```bash
+   cdk destroy
+   ```
+
+
+## Assumptions
+
+- Message validation involves checking the presence and validity of all fields in the "metadata" section. Invalid messages will not proceed further.
+
+## Future Improvements
+
+- Add API authorization.
+- Configure Cognito user pool.
+- Enhance project file structure.
+- Add Dead-letter queue.
+- Improve response formats using a response handler.
+
+
+## API Endpoints
+
+### Send Messages to the System
+
+**Endpoint: [POST] /prod/post-message**
+
+Request Body:
+
+```json
+{
+  "metadata": {
+    "message_time": "2023-12-10T22:02:38Z",
+    "company_id": "e0721e56-fb09-4273-ae74-7bcbc92d43eb",
+    "message_id": "fc0daad3-4f10-4d15-b8c6-276cca111e87"
+  },
+  "data": {
+    "order_id": "a929b88e-bc47-4f7d-9584-61c3c94ad2f2",
+    "order_time": "2023-12-10T22:00:00Z",
+    "order_amount": 20
+  }
+}
 ```
-$ python -m venv .venv
-```
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+### Fetch a Message by Message ID
 
-```
-$ source .venv/bin/activate
-```
+**Endpoint: [GET] /prod/message/{message_id}**
 
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+Replace `{message_id}` with the actual message ID.
