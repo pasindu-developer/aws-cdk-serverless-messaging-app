@@ -49,6 +49,7 @@ def get_message_from_dynamodb(message_id):
                          'message_id': item['message_id']['S'],
                          'company_id': item['company_id']['S'],
                          'message_time': item['message_time']['S'],
+                         'message_s3_key': item['message_s3_key']['S']
                     },
                     'data': {
                          'order_id': item['order_id']['S'],
