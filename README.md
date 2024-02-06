@@ -1,8 +1,10 @@
-# AWS Serverless Assignment - 2024
+# AWS Serverless Assignment - AWS CDK . Python
 
 ## Overview
+This document outlines the setup and implementation details for an AWS Serverless project using the AWS Cloud Development Kit (CDK) with Python. The project utilizes various AWS services, including CloudFormation, CloudWatch, and serverless services such as API Gateway, Lambda, DynamoDB, S3, and SQS.
 
-This document outlines the setup and implementation details for an AWS Serverless project using the AWS Cloud Development Kit (CDK) with Python. The project utilizes various AWS Serverless services, including API Gateway, Lambda, DynamoDB, S3, SQS, CloudFormation, and CloudWatch.
+## Architecture Diagram:
+![Overall Architecture](architecture-diagram.png)
 
 ## Prerequisites
 
@@ -16,60 +18,48 @@ Ensure that you have the necessary prerequisites for AWS CDK. Refer to [AWS CDK 
 
 ## Initial Project Setup
 
-1. Initialize the project with the following commands:
-
-   ```bash
-   cdk init app --language python
-   python -m venv .venv
-   ```
-
-2. Install the required dependencies:
+1. Install the required dependencies:
 
    ```bash
    python -m pip install -r requirements.txt
    ```
 
-3. Fix AWS CDK import issues (Windows Only):
-
-   Use the following commands:
-   ```bash
-   Ctrl+Shift+p  > search > python: selectinterpreter > select global version
-   ```
-
-4. Bootstrap the AWS environment (run only for the first project in the selected AWS account):
+2. Bootstrap the AWS environment (Run only once per AWS account and region):
 
    ```bash
    cdk bootstrap
    ```
 
-5. Generate the CloudFormation template:
+3. Generate the CloudFormation template:
 
    ```bash
    cdk synth
    ```
 
-6. View differences between the current and previous code:
+4. View differences between the current and previous code:
 
    ```bash
    cdk diff
    ```
 
-7. Deploy the project:
+5. Deploy the project:
 
    ```bash
    cdk deploy
    ```
 
-8. Destroy the stack (delete everything):
+6. Destroy the stack ( Delete the AWS resources created by your AWS CDK stack):
 
    ```bash
    cdk destroy
    ```
 
 
-## Assumptions
+## Assumptions & decisions
 
 - Message validation involves checking the presence and validity of all fields in the "metadata" section. Invalid messages will not proceed further.
+
+- Used SQS in this serverless messaging application enhances reliability, scalability, and flexibility by providing a robust messaging infrastructure for communication between different components
 
 ## Future Improvements
 
@@ -79,13 +69,12 @@ Ensure that you have the necessary prerequisites for AWS CDK. Refer to [AWS CDK 
 - Add Dead-letter queue.
 - Improve response formats using a response handler.
 
-
 ## API Endpoints
 
 ### Send Messages to the System
-
-**Endpoint: [POST] /prod/post-message**
-
+```bash
+Endpoint: [POST] /prod/post-message
+```
 Request Body:
 
 ```json
@@ -104,7 +93,7 @@ Request Body:
 ```
 
 ### Fetch a Message by Message ID
-
-**Endpoint: [GET] /prod/message/{message_id}**
-
+```bash
+Endpoint: [GET] /prod/message/{message_id}
+```
 Replace `{message_id}` with the actual message ID.
